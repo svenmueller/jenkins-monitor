@@ -6,7 +6,7 @@ By using jquery jsonp support and jenkins built-in jsonp reponse support, implem
 
 Furthermore it plays a sound when
 * a build fails using google translate (e.g. ["Build 'sample' failed"] (http://translate.google.com/translate_tts?q=buildsamplefailed&tl=en))
-* a build is build successfully 
+* a build is successfully 
 
 Why
 -------
