@@ -35,13 +35,10 @@ var jenkinsDashboard = {
         });
     },
     composeHtmlFragement: function (jobs) {
-        var fragment = "<section>",
-            jobs_to_be_filtered = config.jobs_to_be_filtered,
-            jobs_to_be_excluded = config.jobs_to_be_excluded;
+        var fragment = "<section>";
+
         $.each(jobs, function () {
-            if ((jobs_to_be_filtered.length === 0 || matchInArray(this.name, jobs_to_be_filtered) === true) && (matchInArray(this.name, jobs_to_be_excluded) === false)) {
-                fragment += ("<article class=" + this.color + "><head>" + this.name + "</head></article>");
-            }
+            fragment += ("<article class=" + this.color + "><head>" + this.name + "</head></article>");
         });
         dashboardLastUpdatedTime = new Date();
         fragment += "<article class='time'>" + dashboardLastUpdatedTime.toString('dd, MMMM ,yyyy')  + "</article></section>";
@@ -69,29 +66,45 @@ function matchInArray(string, expressions) {
 
 };
 
-function soundForCI(data, lastData) {
+function processData(data) {
 
     var jobs_to_be_filtered = config.jobs_to_be_filtered,
         jobs_to_be_excluded = config.jobs_to_be_excluded;
 
 
+    var processedJobs = jQuery.grep(data.jobs, function(n, i) {
+
+        if ((jobs_to_be_filtered.length === 0 || matchInArray(data.jobs[i].name, jobs_to_be_filtered) === true) && (matchInArray(data.jobs[i].name, jobs_to_be_excluded) === false)) {
+            data.jobs[i].name = data.jobs[i].name.replace(config.remove_string_in_name,"");
+            return true;
+        }
+        return false;
+    });
+
+    data.jobs = processedJobs;
+
+    return data;
+}
+
+function soundForCI(data, lastData) {
+
+
     if (lastData !== null) {
         $(data.jobs).each(function (index) {
-            if ((jobs_to_be_filtered.length === 0 || matchInArray(this.name, jobs_to_be_filtered) === true) && (matchInArray(this.name, jobs_to_be_excluded) === false)) {
-                if (lastData.jobs[index] !== undefined) {
-                    if (lastData.jobs[index].color !== 'red' && this.color === 'red') {
-                        soundQueue.add('http://translate.google.com/translate_tts?q=build+' + this.name + '+faild&tl=en');
-                    }
-                    if (lastData.jobs[index].color !== 'blue' && this.color === 'blue') {
-                        console.log(this.name);
-                        soundQueue.add('sounds/build_fail_super_mario.mp3');
-                    }
+            if (lastData.jobs[index] !== undefined) {
+                if (lastData.jobs[index].color !== 'red' && this.color === 'red') {
+                    soundQueue.add('http://translate.google.com/translate_tts?q=build+' + this.name + '+faild&tl=en');
+                }
+                if (lastData.jobs[index].color !== 'blue' && this.color === 'blue') {
+                    soundQueue.add('sounds/build_fail_super_mario.mp3');
                 }
             }
         });
     }
+
     return data;
 }
+
 $(document).ready(function () {
 
     var ci_url = config.ci_url + "/api/json",
@@ -113,6 +126,7 @@ $(document).ready(function () {
                 },
                 success: function (data, status) {
                     $.unblockUI();
+                    data = processData(data);
                     lastData = soundForCI(data, lastData);
                     jenkinsDashboard.updateBuildStatus(data);
                 },
