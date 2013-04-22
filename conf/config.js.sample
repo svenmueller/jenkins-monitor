@@ -1,5 +1,6 @@
 var config = {
-	ci_url: 'http://ci.jruby.org/view/Ruboto',
-	jobs_to_be_filtered: [],
-	jobs_to_be_excluded: []
+	ci_url: 'http://build.commercetools.de',
+	jobs_to_be_filtered: ["grid"],
+	jobs_to_be_excluded: ["kela-saucelabs","hundetraum"],
+	remove_string_in_name: "grid-"  
 }
