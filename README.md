@@ -38,5 +38,7 @@ How to Use
 
   Then run from command line: 
 
-		open index.html -a safari
+		open index.html
+
+  Using Chrome or Safari is recommended. If you have lots of job, use Chrome and set browser zoom to the proper value so that you can see all the jobs at once (e.g. 25%).
 		
