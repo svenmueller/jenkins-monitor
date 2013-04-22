@@ -1,8 +1,12 @@
 Jenkins Monitor
 =============
 
-A project aims at helping you show status of build in blue (building), red (failure), green (success) box on jenkins.
+Jenkins Monitor shows the status of build in blue (building), red (failure), green (success) box on jenkins.
 By using jquery jsonp support and jenkins built-in jsonp reponse support, implementing this is just a piece of cake.
+
+Furthermore it plays a sound when
+* a build fails using google translate (e.g. ["Build 'sample' failed"] (http://translate.google.com/translate_tts?q=buildsamplefailed&tl=en))
+* a build is build successfully 
 
 Why
 -------
