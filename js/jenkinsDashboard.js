@@ -39,7 +39,7 @@ var jenkinsDashboard = {
             jobs_to_be_filtered = config.jobs_to_be_filtered,
             jobs_to_be_excluded = config.jobs_to_be_excluded;
         $.each(jobs, function () {
-            if ((jobs_to_be_filtered.length === 0 || $.inArray(this.name, jobs_to_be_filtered) !== -1) && ($.inArray(this.name, jobs_to_be_excluded) === -1)) {
+            if ((jobs_to_be_filtered.length === 0 || matchInArray(this.name, jobs_to_be_filtered) === true) && (matchInArray(this.name, jobs_to_be_excluded) === false)) {
                 fragment += ("<article class=" + this.color + "><head>" + this.name + "</head></article>");
             }
         });
@@ -53,15 +53,39 @@ var jenkinsDashboard = {
     }
 };
 
+
+function matchInArray(string, expressions) {
+
+    var len = expressions.length,
+        i = 0;
+
+    for (; i < len; i++) {
+        if (string.match(expressions[i])) {
+            return true;
+        }
+    }
+
+    return false;
+
+};
+
 function soundForCI(data, lastData) {
+
+    var jobs_to_be_filtered = config.jobs_to_be_filtered,
+        jobs_to_be_excluded = config.jobs_to_be_excluded;
+
+
     if (lastData !== null) {
         $(data.jobs).each(function (index) {
-            if (lastData.jobs[index] !== undefined) {
-                if (lastData.jobs[index].color === 'blue_anime' && this.color === 'red') {
-                    soundQueue.add('http://translate.google.com/translate_tts?q=build+' + this.name + '+faild&tl=en');
-                }
-                if (lastData.jobs[index].color === 'blue' && this.color === 'blue') {
-                    soundQueue.add('sounds/build_fail_super_mario.mp3');
+            if ((jobs_to_be_filtered.length === 0 || matchInArray(this.name, jobs_to_be_filtered) === true) && (matchInArray(this.name, jobs_to_be_excluded) === false)) {
+                if (lastData.jobs[index] !== undefined) {
+                    if (lastData.jobs[index].color !== 'red' && this.color === 'red') {
+                        soundQueue.add('http://translate.google.com/translate_tts?q=build+' + this.name + '+faild&tl=en');
+                    }
+                    if (lastData.jobs[index].color !== 'blue' && this.color === 'blue') {
+                        console.log(this.name);
+                        soundQueue.add('sounds/build_fail_super_mario.mp3');
+                    }
                 }
             }
         });
