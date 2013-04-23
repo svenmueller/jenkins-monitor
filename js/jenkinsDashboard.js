@@ -93,10 +93,11 @@ function soundForCI(data, lastData) {
         $(data.jobs).each(function (index) {
             if (lastData.jobs[index] !== undefined) {
                 if (lastData.jobs[index].color !== 'red' && this.color === 'red') {
-                    soundQueue.add('http://translate.google.com/translate_tts?q=build+' + this.name + '+faild&tl=en');
+                    soundQueue.add('http://translate.google.com/translate_tts?q=build+' + this.name + '+failed&tl=en');
                 }
                 if (lastData.jobs[index].color !== 'blue' && this.color === 'blue') {
-                    soundQueue.add('sounds/build_fail_super_mario.mp3');
+                    console.log("last job: name: " + lastData.jobs[index].name + " color: " + lastData.jobs[index].color + ", job: name: " + this.name + ", color: " + this.color);
+                    soundQueue.add('sounds/success.mp3');
                 }
             }
         });
