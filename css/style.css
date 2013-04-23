@@ -2,7 +2,7 @@
      padding: 10px;
      margin: 20px;
      font: bold 3.1em Helvetica, Arial, sans-serif;
-     background-color: #FFF;
+     background-color: black;
    }
 
    section, header, footer, aside, nav, article, figure {
@@ -30,7 +30,7 @@
 		
 .blue {
     background:#749a02;
-    -webkit-animation: greenPulse 4s infinite;
+    /* -webkit-animation: greenPulse 4s infinite; */
 }
 
 .blue_anime, .red_anime, .yellow_anime, .aborted_anime {
@@ -49,6 +49,17 @@
 	color: black;
 	box-shadow: none;
 }
+
+div.info {
+    border-radius: 0.6em 0 0.6em 0 ;
+    background: rgba(99,0,0,0.8);
+    padding: 0.1em 0.3em;
+    font-size: 0.5em;
+    color: rgba(255,255,255,0.5);
+    position: absolute;
+    bottom: 0px;
+    right: 0px;
+    }
 
 .job_disabled_or_aborted {
 	-webkit-transform: rotate(20deg);
