@@ -1,6 +1,6 @@
 var config = {
 	ci_url: 'http://build.commercetools.de',
 	jobs_to_be_filtered: ["grid"],
-	jobs_to_be_excluded: ["kela-saucelabs","hundetraum"],
+	jobs_to_be_excluded: ["kela-saucelabs","hundetraum","heelys", "-wip-", "trigger"],
 	remove_string_in_name: "grid-"  
 }
