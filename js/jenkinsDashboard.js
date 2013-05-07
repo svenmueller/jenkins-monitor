@@ -74,8 +74,15 @@ function processData(data) {
 
     var processedJobs = jQuery.grep(data.jobs, function(n, i) {
 
-        if ((jobs_to_be_filtered.length === 0 || matchInArray(data.jobs[i].name, jobs_to_be_filtered) === true) && (matchInArray(data.jobs[i].name, jobs_to_be_excluded) === false)) {
+        if ((jobs_to_be_filtered.length === 0 || matchInArray(data.jobs[i].name, jobs_to_be_filtered) === true) && (matchInArray(data.jobs[i].name, jobs_to_be_excluded) === false) && (data.jobs[i].color!=="disabled" )) {
             data.jobs[i].name = data.jobs[i].name.replace(config.remove_string_in_name,"");
+
+            if (config.replace_in_name) {
+                for (var s = 0; s < config.replace_in_name.length; s++) {
+                    data.jobs[i].name = data.jobs[i].name.replace(config.replace_in_name[s]["key"],config.replace_in_name[s]["value"]);
+                }
+            }
+
             return true;
         }
         return false;
@@ -92,12 +99,14 @@ function soundForCI(data, lastData) {
     if (lastData !== null) {
         $(data.jobs).each(function (index) {
             if (lastData.jobs[index] !== undefined) {
-                if (lastData.jobs[index].color !== 'red' && this.color === 'red') {
+                //console.log("Build failed - last job: name: " + lastData.jobs[index].name + " color: " + lastData.jobs[index].color + ", job: name: " + this.name + ", color: " + this.color);
+                if (lastData.jobs[index].color === 'blue_anime' && this.color === 'red') {
+                    //console.log("Build failed - last job: name: " + lastData.jobs[index].name + " color: " + lastData.jobs[index].color + ", job: name: " + this.name + ", color: " + this.color);
                     soundQueue.add('http://translate.google.com/translate_tts?q=build+' + this.name + '+failed&tl=en');
                 }
-                if (lastData.jobs[index].color !== 'blue' && this.color === 'blue') {
-                    console.log("last job: name: " + lastData.jobs[index].name + " color: " + lastData.jobs[index].color + ", job: name: " + this.name + ", color: " + this.color);
-                    soundQueue.add('sounds/success.mp3');
+                if (lastData.jobs[index].color === 'red_anime' && this.color === 'blue') {
+                    //console.log("Build was successfull - last job: name: " + lastData.jobs[index].name + " color: " + lastData.jobs[index].color + ", job: name: " + this.name + ", color: " + this.color);
+                    soundQueue.add('sounds/nsmb_power-up.mp3');
                 }
             }
         });
@@ -139,7 +148,9 @@ $(document).ready(function () {
                     }
                 }
             });
+            console.log("Sounds before play: " + sounds.length);
             soundQueue.play();
+            console.log("Sounds after play: " + sounds.length);
         }, 4000);
 
 });
