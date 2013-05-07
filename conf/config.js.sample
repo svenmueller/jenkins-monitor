@@ -2,5 +2,5 @@ var config = {
 	ci_url: 'http://build.commercetools.de',
 	jobs_to_be_filtered: [/\bgrid-/],
 	jobs_to_be_excluded: ["kela-saucelabs","hundetraum","heelys", "-wip", "trigger", "automation-publish-private-deb-grid"],
-	remove_string_in_name: "grid-"
+	replace_in_name: [{key:"grid-store-", value:""}, {key:"grid-solr", value:"s"}, {key:"webtests-production", value:"wp"}, {key:"webtests-staging", value:"ws"}, {key:"grid-", value:""}] 
 }
