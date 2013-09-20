@@ -74,7 +74,7 @@ function processData(data) {
 
     var processedJobs = jQuery.grep(data.jobs, function(n, i) {
 
-        if ((jobs_to_be_filtered.length === 0 || matchInArray(data.jobs[i].name, jobs_to_be_filtered) === true) && (matchInArray(data.jobs[i].name, jobs_to_be_excluded) === false) && (data.jobs[i].color!=="disabled" )) {
+        if ((jobs_to_be_filtered.length === 0 || matchInArray(data.jobs[i].name, jobs_to_be_filtered) === true) && (matchInArray(data.jobs[i].name, jobs_to_be_excluded) === false)) {
             data.jobs[i].name = data.jobs[i].name.replace(config.remove_string_in_name,"");
 
             if (config.replace_in_name) {
